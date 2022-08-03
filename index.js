@@ -3,6 +3,10 @@ const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const { updateEmployee } = require("./db/index");
 const DbHelper = require("./db/index");
+const cTable = require('console.table');
+
+
+
 
 const MainQuestions = () => {
   inquirer
@@ -54,21 +58,21 @@ const MainQuestions = () => {
 
 function viewDepartments() {
   DbHelper.getAllDepartments().then(([rows]) => {
-    console.log(rows);
+    console.table(rows);
   });
   MainQuestions();
 }
 
 function viewRoles() {
   DbHelper.getAllRoles().then(([rows]) => {
-    console.log(rows);
+    console.table(rows);
   });
   MainQuestions();
 }
 
 function viewEmployees() {
   DbHelper.getAllEmployees().then(([rows]) => {
-    console.log(rows);
+    console.table(rows);
   });
   MainQuestions();
 }
@@ -146,7 +150,7 @@ function updateEmployeeRole() {
 
   DbHelper.getAllRoles().then(([roleRows]) => {
     roles = roleRows;
-    const roleNames = roleRows.map((data) => data.name);
+    const roleNames = roleRows.map((data) => data.title);
 
     DbHelper.getAllEmployees().then(([employeeRows]) => {
       employee = employeeRows;
@@ -180,7 +184,7 @@ function updateEmployeeRole() {
           })[0]["id"];
 
           const roleId = roles.filter((data) => {
-            if (data.name === answers.newRole) {
+            if (data.title === answers.newRole) {
               return true;
             }
           })[0]["id"];
